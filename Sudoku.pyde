@@ -10,6 +10,8 @@ cell_h = (grid_bottom - grid_top) / grid_size
 clicked_cell = None
 num = [[0 for _ in range(grid_size)] for _ in range(grid_size)]
 position_num = []
+isError = [[False for _ in range(grid_size)] for _ in range(grid_size)]
+solution = None
 
 fixedCells = set()
 selectedNumber = None
@@ -44,10 +46,13 @@ def setup():
     generatePuzzle()
 
 def draw():
+    background(255)
     draw_grid()
+    draw_table()
+    draw_subtable()
+    draw_errors()
 
 def draw_grid():
-    background(255)
     draw_table()
     draw_subtable()
     if clicked_cell is not None:
@@ -144,6 +149,43 @@ def drawNumbers():
                 else:
                     fill(50, 100, 255)
                 text(str(n), x, y)
+            
+def draw_errors():
+    noFill()
+    stroke(255, 0, 0)
+    strokeWeight(3)
+
+    for r in range(grid_size):
+        for c in range(grid_size):
+            if num[r][c] == 0:
+                continue
+
+            wrong = False
+            v = num[r][c]
+
+            if solution and solution[r][c] != 0:
+                wrong = (v != solution[r][c])
+            else:
+                for i in range(grid_size):
+                    if i != c and num[r][i] == v:
+                        wrong = True
+                    if i != r and num[i][c] == v:
+                        wrong = True
+
+                sr = (r // 3) * 3
+                sc = (c // 3) * 3
+                for rr in range(sr, sr + 3):
+                    for cc in range(sc, sc + 3):
+                        if (rr != r or cc != c) and num[rr][cc] == v:
+                            wrong = True
+
+            if wrong:
+                x = c * cell_w
+                y = grid_top + r * cell_h
+                rect(x, y, cell_w, cell_h)
+                rect(x + 2, y + 2, cell_w - 4, cell_h - 4)
+
+    noStroke()
 
 def drawNumberSelector():
     for i in range(9):
