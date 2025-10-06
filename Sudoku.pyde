@@ -51,7 +51,7 @@ def draw_grid():
     draw_table()
     draw_subtable()
     if clicked_cell is not None:
-        draw_circle_in_cell(*clicked_cell)
+        draw_rect_in_cell(*clicked_cell)
     drawNumbers()
     drawNumberSelector()
 
@@ -82,11 +82,14 @@ def draw_subtable():
             y = grid_top + j * cell_h
             line(0, y, width, y)
 
-def draw_circle_in_cell(row, col):
-    x = col * cell_w + cell_w / 2
-    y = grid_top + row * cell_h + cell_h / 2
-    fill(255, 0, 0)
-    ellipse(x, y, 20, 20)
+def draw_rect_in_cell(row, col):
+    x = col * cell_w
+    y = grid_top + row * cell_h
+    padding = 4
+
+    fill(255, 0, 0, 100)
+    noStroke()
+    rect(x + padding, y + padding, cell_w - 2 * padding, cell_h - 2 * padding)
 
 def culculate_box(Xuser, Yuser, x, y, x2, y2):
     return Xuser > x and Xuser < x2 and Yuser > y and Yuser < y2
