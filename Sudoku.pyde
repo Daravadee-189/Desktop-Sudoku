@@ -1,11 +1,14 @@
 canvas_width = 500
-canvas_height = 750
+canvas_height = 900
 grid_size = 9
 grid_top = 20
 grid_bottom = 625
+xflowchart = 650
+yflowchart = 50
 
-cell_w = canvas_width / grid_size
-cell_h = (grid_bottom - grid_top) / grid_size
+resetY = grid_bottom + 100
+showY = grid_bottom + 100
+showX = 280
 
 clicked_cell = None
 num = [[0 for _ in range(grid_size)] for _ in range(grid_size)]
@@ -27,7 +30,7 @@ def shuffle(arr):
 
 def setup():
     global cell_w, cell_h, cellSelectorW, selectorTop
-    size(canvas_width, canvas_height)
+    size(1000, canvas_height)
     cell_w = canvas_width / grid_size
     cell_h = (grid_bottom - grid_top) / grid_size
     cellSelectorW = canvas_width / grid_size
@@ -49,12 +52,11 @@ def draw():
     background(255)
     draw_grid()
     draw_table()
-    draw_subtable()
     draw_errors()
+    flowchart_section(650, 25)
 
 def draw_grid():
     draw_table()
-    draw_subtable()
     if clicked_cell is not None:
         draw_rect_in_cell(*clicked_cell)
     drawNumbers()
@@ -62,30 +64,20 @@ def draw_grid():
 
 def draw_table():
     strokeWeight(5)
-    line(0, grid_top, width, grid_top)
-    line(0, grid_bottom, width, grid_bottom)
+    stroke(0)
+    line(0, grid_top, canvas_width, grid_top)
+    line(0, grid_bottom, canvas_width, grid_bottom)
 
     for i in range(1, grid_size):
-        if i % 3 == 0:
-            x = i * cell_w
-            line(x, grid_top, x, grid_bottom)
+        x = i * cell_w
+        y = grid_top + i * cell_h
 
-    for j in range(1, grid_size):
-        if j % 3 == 0:
-            y = grid_top + j * cell_h
-            line(0, y, width, y)
+        strokeWeight(3 if i % 3 == 0 else 1)
+        line(x, grid_top, x, grid_bottom)
+        line(0, y, canvas_width, y)
 
-def draw_subtable():
-    strokeWeight(1)
-    for i in range(1, grid_size):
-        if i % 3 != 0:
-            x = i * cell_w
-            line(x, grid_top, x, grid_bottom)
-
-    for j in range(1, grid_size):
-        if j % 3 != 0:
-            y = grid_top + j * cell_h
-            line(0, y, width, y)
+    strokeWeight(5)
+    line(canvas_width - 1, grid_top, canvas_width - 1, grid_bottom)
 
 def draw_rect_in_cell(row, col):
     x = col * cell_w
@@ -243,3 +235,89 @@ def generatePuzzle():
                 fixedCells.add(r * grid_size + c)
             else:
                 num[r][c] = 0
+                
+# Flowchart section
+def start_stop_type(posx, posy, size, word):
+    fill(255)
+    stroke(0)
+    strokeWeight(2)
+    ellipse(posx, posy, size, size / 2)
+    fill(0)
+    textAlign(CENTER, CENTER)
+    textSize(16)
+    text(word, posx, posy)
+    return posy + size / 2 + 20
+
+def process_type(posx, posy, size, word):
+    fill(255)
+    stroke(0)
+    strokeWeight(2)
+    rect(posx - size / 2, posy - size / 2, size, size)
+    fill(0)
+    textAlign(CENTER, CENTER)
+    textSize(16)
+    text(word, posx, posy)
+    return posy + size / 2 + 100
+
+def decision_type(posx, posy, size, word):
+    fill(255)
+    stroke(0)
+    strokeWeight(2)
+    quad(
+        posx, posy - size / 2,
+        posx + size, posy,
+        posx, posy + size / 2,
+        posx - size, posy
+    )
+    fill(0)
+    textAlign(CENTER, CENTER)
+    textSize(16)
+    text(word, posx, posy)
+    return posy + size / 2 + 100
+
+def drawArrow(x, y1, y2):
+    arrowGap = 10
+    stroke(0)
+    strokeWeight(2)
+    line(x, y1, x, y2)
+    
+    fill(0)
+    triangle(x-6, y2-arrowGap,x+6, y2-arrowGap, x, y2)
+
+def drawArrowHorizontal(x1, x2, y):
+    stroke(0)
+    strokeWeight(2)
+    line(x1, y, x2, y)
+    fill(0)
+    triangle(x2-10, y-6, x2-10, y+6, x2, y)
+
+def text_box(x, y, box_type, word):
+    textAlign(CENTER, CENTER)
+    textSize(14)
+    text(word, x, y)
+
+def flowchart_section(xflowchart, yflowchart):
+    y1 = start_stop_type(xflowchart, yflowchart, 100, "START")
+    drawArrow(xflowchart, yflowchart + 25, y1 - 50)
+
+    y2 = process_type(xflowchart, y1, 100, "Initialize Grid")
+    drawArrow(xflowchart, y1 + 50, y2 - 40)
+
+    y3 = process_type(xflowchart, y2, 110, "User Interaction")
+    drawArrow(xflowchart, y2 + 55, y3 - 50)
+
+    y4 = decision_type(xflowchart, y3, 100, "Is Solved?")
+    text_box(xflowchart + 25, y4 - 75, 1, "TRUE")
+    drawArrowHorizontal(xflowchart + 100, xflowchart + 200, y3)
+    text_box(xflowchart + 120, y3 - 20, 1, "FALSE")
+    drawArrow(xflowchart + 200, y3, y4 - 50)
+    drawArrow(xflowchart, y3 + 50, y4 - 50)
+
+    y5 = process_type(xflowchart, y4, 100, "Show Result")
+    drawArrow(xflowchart, y4 + 50, y5 - 70)
+    drawArrowHorizontal(xflowchart, xflowchart + 200, y5 - 70)
+
+    y5alt = process_type(xflowchart + 200, y4, 100, "Show Mistake")
+    drawArrow(xflowchart + 200, y4 + 50, y5 - 50)
+
+    start_stop_type(xflowchart + 200, y5alt - 25, 100, "END")
