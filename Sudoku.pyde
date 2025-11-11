@@ -11,9 +11,9 @@ showY = grid_bottom + 100
 showX = 280
 
 clicked_cell = None
-num = [[0 for _ in range(grid_size)] for _ in range(grid_size)]
+num = []
 position_num = []
-isError = [[False for _ in range(grid_size)] for _ in range(grid_size)]
+isError = []
 solution = None
 
 fixedCells = set()
@@ -37,6 +37,18 @@ def setup():
     cell_h = (grid_bottom - grid_top) / grid_size
     cellSelectorW = canvas_width / grid_size
     selectorTop = grid_bottom + 20
+
+    for row_index in range(grid_size):
+        row = []
+        for col_index in range(grid_size):
+            row.append(0)
+        num.append(row)
+    
+    for row_index in range(grid_size):
+        row = []
+        for col_index in range(grid_size):
+            row.append(False)
+        isError.append(row)
 
     for row in range(grid_size):
         row_pos = []
