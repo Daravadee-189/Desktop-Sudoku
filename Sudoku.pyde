@@ -60,7 +60,9 @@ def draw():
 def draw_grid():
     draw_table()
     if clicked_cell is not None:
-        draw_rect_in_cell(*clicked_cell)
+        row = clicked_cell[0]
+        col = clicked_cell[1]
+        draw_rect_in_cell(row,col)
     drawNumbers()
     drawNumberSelector()
 
