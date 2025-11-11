@@ -104,15 +104,20 @@ def draw_rect_in_cell(row, col):
     noStroke()
     rect(x + padding, y + padding, cell_w - 2 * padding, cell_h - 2 * padding)
 
-def culculate_box(Xuser, Yuser, x, y, x2, y2):
-    return Xuser > x and Xuser < x2 and Yuser > y and Yuser < y2
+def calculate_box(Xuser, Yuser, x, y, x2, y2):
+    if Xuser > x:
+        if Xuser < x2:
+            if Yuser > y:
+                if Yuser < y2:
+                    return True
+    return False
 
 def mousePressed():
     global clicked_cell, selectedNumber
     for row in range(grid_size):
         for col in range(grid_size):
             x, y, x2, y2 = position_num[row][col]
-            if culculate_box(mouseX, mouseY, x, y, x2, y2):
+            if calculate_box(mouseX, mouseY, x, y, x2, y2):
                 if (row * grid_size + col) not in fixedCells:
                     clicked_cell = (row, col)
                 return
