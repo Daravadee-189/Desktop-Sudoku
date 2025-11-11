@@ -25,7 +25,9 @@ cellSelectorW = 0
 def shuffle(arr):
     for i in range(len(arr) - 1, 0, -1):
         j = int(random(i + 1))
-        arr[i], arr[j] = arr[j], arr[i]
+        tmp = arr[i]
+        arr[i] = arr[j]
+        arr[j] = tmp
     return arr
 
 def setup():
