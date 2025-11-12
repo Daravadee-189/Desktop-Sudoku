@@ -105,12 +105,7 @@ def draw_rect_in_cell(row, col):
     rect(x + padding, y + padding, cell_w - 2 * padding, cell_h - 2 * padding)
 
 def calculate_box(Xuser, Yuser, x, y, x2, y2):
-    if Xuser > x:
-        if Xuser < x2:
-            if Yuser > y:
-                if Yuser < y2:
-                    return True
-    return False
+    return Xuser > x and Xuser < x2 and Yuser > y and Yuser < y2
 
 def mousePressed():
     global clicked_cell, selectedNumber
