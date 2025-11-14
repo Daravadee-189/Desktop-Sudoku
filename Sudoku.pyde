@@ -3,12 +3,6 @@ canvas_height = 900
 grid_size = 9
 grid_top = 20
 grid_bottom = 625
-xflowchart = 650
-yflowchart = 50
-
-resetY = grid_bottom + 100
-showY = grid_bottom + 100
-showX = 280
 
 clicked_cell = None
 num = []
