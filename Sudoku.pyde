@@ -251,3 +251,11 @@ def generatePuzzle():
                 fixedCells.add(r * grid_size + c)
             else:
                 num[r][c] = 0
+
+def BlankCells_in_rows(board):
+    value_blank_box = 0
+    for row in board:
+        for col in row:
+            if col == 0:
+                value_blank_box += 1
+    return value_blank_box
