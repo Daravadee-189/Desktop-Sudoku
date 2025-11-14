@@ -67,7 +67,7 @@ def draw():
     draw_grid()
     draw_table()
     draw_errors()
-    flowchart_section(650, 25)
+    draw_blankCells(BlankCells_in_rows(num))
 
 def draw_grid():
     draw_table()
@@ -259,3 +259,11 @@ def BlankCells_in_rows(board):
             if col == 0:
                 value_blank_box += 1
     return value_blank_box
+
+def draw_blankCells(value_blank_box):
+    textSize(50)
+    fill(0)
+    textAlign(LEFT, CENTER)
+    start_x = canvas_width + 125
+    start_y = grid_top + 125
+    text("Blank Cells : "+ str(value_blank_box), start_x,start_y)
