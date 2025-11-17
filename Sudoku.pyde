@@ -257,9 +257,23 @@ def BlankCells_in_rows(board):
     return value_blank_box
 
 def draw_blankCells(value_blank_box):
-    textSize(50)
+    textSize(20)
+    textAlign(CENTER, CENTER)
+    x_panel = canvas_width + 100
+    w_cell = 200
+    h_cell = (grid_bottom - grid_top) / 9
+    
     fill(0)
-    textAlign(LEFT, CENTER)
-    start_x = canvas_width + 125
-    start_y = grid_top + 125
-    text("Blank Cells : "+ str(value_blank_box), start_x,start_y)
+    text("Blank Cells :", (x_panel + w_cell/2), (grid_top - 10))
+    
+    for row in range(9):
+        x = x_panel
+        y = grid_top + row * h_cell
+        
+        fill(240)
+        stroke(0)
+        strokeWeight(2)
+        rect(x, y, w_cell, h_cell)
+        
+        fill(0)
+        text(str(value_blank_box[row]), (x + w_cell/2), (y + h_cell/2))
