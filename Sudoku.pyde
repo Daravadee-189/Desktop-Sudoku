@@ -247,11 +247,13 @@ def generatePuzzle():
                 num[r][c] = 0
 
 def BlankCells_in_rows(board):
-    value_blank_box = 0
-    for row in board:
-        for col in row:
-            if col == 0:
-                value_blank_box += 1
+    value_blank_box = []
+    for row in range(9):
+        count = 0
+        for col in range(9):
+            if board[row][col] == 0:
+                count += 1
+        value_blank_box.append(count)
     return value_blank_box
 
 def draw_blankCells(value_blank_box):
