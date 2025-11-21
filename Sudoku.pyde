@@ -66,7 +66,12 @@ def draw():
     draw_grid()
     draw_table()
     draw_errors()
+    draw_row_frame(teaching_row)    
     draw_blankCells(BlankCells_in_rows(num))
+    draw_teaching_results()
+    
+    if teaching_mode:
+        input_number()
 
 def draw_grid():
     draw_table()
