@@ -16,6 +16,11 @@ selectorTop = 0
 selectorH = 50
 cellSelectorW = 0
 
+teaching_mode = False
+teaching_row = 0
+user_input_value = ""
+teaching_results = [None]*9
+
 def shuffle(arr):
     for i in range(len(arr) - 1, 0, -1):
         j = int(random(i + 1))
@@ -277,3 +282,32 @@ def draw_blankCells(value_blank_box):
         
         fill(0)
         text(str(value_blank_box[row]), (x + w_cell/2), (y + h_cell/2))
+
+def draw_teaching_results():
+    x_panel = canvas_width + 250
+    w_cell = 150
+    h_cell = (grid_bottom - grid_top)/9
+    textSize(18)
+    textAlign(CENTER, CENTER)
+    
+    fill(0)
+    text("Answer :", x_panel + w_cell/2, grid_top-10)
+    
+    for r in range(9):
+        y = grid_top + r*h_cell
+        fill(240)
+        stroke(0)
+        rect(x_panel, y, w_cell, h_cell)
+        
+        row_numbers = [str(num[r][c]) for c in range(9) if num[r][c] != 0]
+        display_text = " ".join(row_numbers) if row_numbers else ""
+        
+        fill(0)
+        text(display_text, x_panel + w_cell/2, y + h_cell/2)
+
+def run_teaching_mode():
+    global teaching_mode, teaching_row, user_input_value, teaching_results
+    teaching_mode = True
+    teaching_row = 0
+    user_input_value = ""
+    teaching_results = [None]*9
