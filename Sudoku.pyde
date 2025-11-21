@@ -311,3 +311,45 @@ def run_teaching_mode():
     teaching_row = 0
     user_input_value = ""
     teaching_results = [None]*9
+
+def draw_row_frame(row):
+    global cell_h
+    noFill()
+    stroke(0,0,255)
+    strokeWeight(3)
+    rect(0, grid_top + row*cell_h, canvas_width, cell_h)
+    noStroke()
+    
+def input_number():
+    global cell_h
+    x = canvas_width + 250
+    y = grid_top + teaching_row * cell_h
+    w = 100
+    h = cell_h
+    fill(255)
+    stroke(0)
+    rect(x, y, w, h)
+    
+    fill(0)
+    textAlign(CENTER, CENTER)
+    textSize(22)
+
+    if user_input_value != "":
+        text(user_input_value, x + w/2, y + h/2)
+    
+    row_numbers = [num[teaching_row][c] for c in range(9) if num[teaching_row][c] != 0]
+    teaching_results[teaching_row] = " ".join(str(n) for n in row_numbers)
+    
+def check_answer(row, user_value):
+    global teaching_row, teaching_mode
+
+    row_numbers = [num[row][c] for c in range(9) if num[row][c] != 0]
+
+    if user_value == len(row_numbers):
+        teaching_results[row] = " ".join(str(n) for n in row_numbers)
+
+        teaching_row += 1
+        if teaching_row > 8:
+            teaching_mode = False
+        return True
+    return False
